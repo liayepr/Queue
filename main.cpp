@@ -11,6 +11,7 @@ int main()
 	q.Enqueue(10); 
 	q.Enqueue(30); q.Print();
 	q.Dequeue(); q.Print();
-	
-		system("pause");
+	Queue q1(q);
+		
+	system("pause");
 }

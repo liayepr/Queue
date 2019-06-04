@@ -4,23 +4,36 @@
 
 using namespace std;
 
-// Default Constructor - set front and rear as -1. We are assuming that for an empty Queue, both front and rear will be -1.
-
-Queue::Queue()
-{
-	std::cout << "Default ctor\n";
-	front = 0;
-	rear = 0;
-	queue = new int;
-}
 
 Queue::Queue(int c)
 {
 	std::cout << "Param ctor\n";
-	front = 0;
-	rear = 0;
+	rear = -1;
 	capacity = c;
-	queue = new int;
+	queue = new int[c];
+}
+
+Queue::Queue(const Queue& other)
+{
+	std::cout << "Copy ctor\n";
+	rear = other.rear;
+	capacity = other.capacity;
+	queue = new int[capacity];
+	for (int i = 0; i <= rear; i++) {
+		queue[i] = other.queue[i];
+	}
+}
+
+Queue::Queue(Queue&& other)
+{
+	std::cout << "Move ctor\n";
+	rear = other.rear;
+	capacity = other.capacity;
+	queue = other.queue;
+
+	other.rear = -1;
+	other.capacity = 0;
+	other.queue = nullptr;
 }
 
 Queue::~Queue()
@@ -31,18 +44,17 @@ Queue::~Queue()
 
 bool Queue::IsEmpty()
 {
-	if (front == rear)
-	{
+	if (rear == -1) {
 		cout << "\nQueue is  empty\n";
 		return true;
-	}
-	else
+	} else {
 		return false;
+	}
 }
 
 bool Queue::IsFull()
 {
-	if (capacity == rear) 
+	if (capacity == rear + 1) 
 	{
 		cout << "\nQueue is full\n";
 		return true;
@@ -61,10 +73,8 @@ void Queue::Enqueue(int x)
 	}
 	else
 	{
-		queue[rear] = x;
-		rear++;
+		queue[++rear] = x;
 	}
-	return;
 }
 
 void Queue::Dequeue()
@@ -75,41 +85,35 @@ void Queue::Dequeue()
 		cout << "Error: Queue is Empty\n";
 		return;
 	}
-	else if (front == rear)
-	{
-		rear = front = 0;
-	}
 	else
 	{
-		for (int i = 0; i < rear - 1; i++) {
+		for (int i = 0; i < rear; i++) {
 			queue[i] = queue[i + 1];
 		}
 		rear--;
 	}
-	return;
 }
 
 void Queue::Front()
 {
-	if (front == rear)
+	if (IsEmpty())
 	{
 		cout << "Error: cannot return front from empty queue\n";
 		return;
 	}
-		cout << "\nFront Element is: %d", queue[front];
-	return;
+	cout << "\nFront Element is: %d", queue[0];
 }
 
 void Queue::Print()
 {
 	int i;
-	if (front == rear) {
+	if (IsEmpty()) {
 		cout << "\nQueue is Empty\n";
 		return;
 	}
 		// traverse front to rear and print elements 
 	cout << "Current Queue: ";
-	for (i = front; i < rear; i++) {
+	for (i = 0; i <= rear; i++) {
 		cout << queue[i] << " ";
 	}
 	cout << endl;

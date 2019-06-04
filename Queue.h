@@ -3,13 +3,14 @@
 class Queue  // Creating a class named Queue.
 {
 private:
-	int front, rear, capacity;
+	int rear, capacity;
 	//int* queue;
 	int* queue;
 
 public:
-	Queue(); // ctor
-	Queue(int c); //param ctor
+	Queue(int c = 10); //param ctor
+	Queue(const Queue& other);
+	Queue(Queue&& other);
 	~Queue();
     bool IsEmpty(); // To check wheter Queue is empty or not
 	bool IsFull(); // To check whether Queue is full or not
